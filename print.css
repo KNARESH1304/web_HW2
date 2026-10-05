@@ -1,0 +1,41 @@
+/*
+  Name:     Naresh Kothoju
+  Section:  [Your section here]
+  Assignment 02 / Layout Lab - MMR (My Movie Review): TMNT (2007)
+
+  File contents: print styles for index.html. Removes the page background, banner and
+  fixed validator links, and keeps each review together across page breaks.
+*/
+
+body {
+  background: white;
+  color: black;
+  font: 10pt Verdana, Tahoma, sans-serif;
+}
+
+#banner,
+#validators {
+  display: none;
+}
+
+#content {
+  width: auto;
+  max-width: none;
+  border: 2px solid black;
+}
+
+.review {
+  break-inside: avoid;
+}
+
+#overview {
+  background: none;
+}
+
+#overview img {
+  max-width: 150px;
+}
+
+a {
+  color: black;
+}

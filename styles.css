@@ -1,0 +1,310 @@
+/*
+  Name:     Naresh Kothoju
+  Section:  [Your section here]
+  Assignment 02 / Layout Lab - MMR (My Movie Review): TMNT (2007)
+
+  File contents: screen styles for index.html.
+
+  Layout decisions (Layout Lab):
+  1. GRID    - #content is an 800px frame with a flexible main column (1fr) and a 250px
+               overview column. Named grid areas place the rating, reviews, overview and
+               counter. Browsers without grid fall back to a simple stacked block layout.
+  2. FLEX    - repeated components use Flexbox, with no spacer elements:
+               .column wrapper in #reviews, .critic (icon + text), #rating, #validators.
+               flex-wrap: wrap on #reviews lets the two review columns wrap onto separate
+               lines whenever they cannot both fit.
+  3. CHANGE  - @media (max-width: 700px) collapses the grid into one stacked column,
+               stacks the review columns and enlarges text; @media (max-width: 480px)
+               tightens spacing for phones. Nothing is wider than the viewport, so no
+               horizontal scrolling occurs.
+*/
+
+/* ---------- Base ---------- */
+
+body {
+  margin: 0;
+  padding: 0;
+  background: url("resource_images/background.png");
+  font: 8pt Verdana, Tahoma, sans-serif;
+}
+
+h1 {
+  margin: 20px 0;
+  text-align: center;
+  font: bold 24pt Tahoma, Verdana, sans-serif;
+}
+
+a:focus,
+a:hover {
+  outline: 2px solid #c00;
+  outline-offset: 2px;
+}
+
+/* ---------- Banner ---------- */
+
+#banner {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  overflow: hidden;
+  background: url("resource_images/bannerbackground.png") repeat-x;
+}
+
+#banner img {
+  flex-shrink: 0;
+  height: 50px;
+}
+
+/* ---------- Content frame (fallback first: plain stacked blocks) ---------- */
+
+#content {
+  width: 800px;
+  max-width: calc(100% - 8px);
+  margin: 0 auto;
+  border: 4px solid gray;
+}
+
+@supports (display: grid) {
+  #content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 250px;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "rating  overview"
+      "reviews overview"
+      "counter counter";
+  }
+
+  #rating { grid-area: rating; }
+  #reviews { grid-area: reviews; }
+  #overview { grid-area: overview; }
+  #counter { grid-area: counter; }
+}
+
+/* ---------- Rating header ---------- */
+
+#rating {
+  display: flex;
+  align-items: flex-end;
+  box-sizing: border-box;
+  height: 83px;
+  padding: 0 0 6px 98px;
+  background:
+    url("resource_images/rottenbig.png") no-repeat left,
+    url("resource_images/rottenbackground.png") repeat-x;
+  color: white;
+}
+
+#rating .percent {
+  margin-right: 8px;
+  font: bold 48pt/1 Tahoma, Verdana, sans-serif;
+  color: red;
+}
+
+#rating .total {
+  padding-bottom: 6px;
+}
+
+/* ---------- Reviews ---------- */
+
+#reviews {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  padding-top: 10px;
+}
+
+#reviews .column {
+  box-sizing: border-box;
+  width: 47%;
+  margin-left: 2%;
+}
+
+.review {
+  margin-bottom: 20px;
+}
+
+.quote {
+  margin: 0;
+  padding: 8px;
+  border: 2px solid gray;
+  background: #E1D697;
+  font-weight: bold;
+  display: flow-root;
+}
+
+.quote img {
+  float: left;
+  margin-right: 5px;
+}
+
+/* Critic: icon beside a two-line name/publication block */
+.critic {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px 0 0 5px;
+}
+
+.critic img {
+  margin-right: 5px;
+}
+
+.critic div {
+  display: flex;
+  flex-direction: column;
+}
+
+.critic em {
+  font-style: italic;
+}
+
+/* ---------- General overview ---------- */
+
+#overview {
+  width: 250px;
+  background: #A2B964;
+  font: 8pt Arial, sans-serif;
+}
+
+#overview img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#overview dl {
+  margin: 0;
+  padding: 10px;
+}
+
+#overview dt {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#overview dt:first-child {
+  margin-top: 0;
+}
+
+#overview dd {
+  margin: 0 0 0 30px;
+}
+
+/* ---------- Counter bar ---------- */
+
+#counter {
+  padding: 5px;
+  background: #A2B964;
+  text-align: center;
+}
+
+/* ---------- Validators (always visible) ---------- */
+
+#validators {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#validators a {
+  display: block;
+}
+
+#validators img {
+  display: block;
+  border: 0;
+}
+
+/* ---------- Tablet / phone: stack everything ---------- */
+
+@media (max-width: 700px) {
+  body {
+    padding-bottom: 80px;
+    font-size: 10pt;
+  }
+
+  h1 {
+    font-size: 20pt;
+  }
+
+  #banner {
+    justify-content: flex-start;
+  }
+
+  #content {
+    width: auto;
+    max-width: none;
+    margin: 0 4px;
+  }
+
+  @supports (display: grid) {
+    #content {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+      grid-template-areas:
+        "rating"
+        "reviews"
+        "overview"
+        "counter";
+    }
+  }
+
+  #rating .percent {
+    font-size: 36pt;
+  }
+
+  #reviews {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    padding: 10px 10px 0;
+  }
+
+  #reviews .column {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  #overview {
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 10pt;
+  }
+
+  #overview img {
+    margin: 0 auto;
+  }
+
+  #validators {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
+
+/* ---------- Small phones ---------- */
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 18pt;
+  }
+
+  #rating {
+    padding-left: 98px;
+  }
+
+  #rating .percent {
+    font-size: 28pt;
+  }
+
+  #rating .total {
+    padding-bottom: 4px;
+  }
+
+  #reviews {
+    padding: 8px 6px 0;
+  }
+}
